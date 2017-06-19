@@ -109,6 +109,12 @@ angular.module('blocktrail.wallet').factory(
             return self.client.post("/mywallet/main", null, {identifier: identifier}, cb);
         };
 
+        blocktrailSDK.prototype.getSignedBitonicUrl = function (params) {
+            var self = this;
+
+            return self.client.post("/mywallet/bitonic/oauth", null, params);
+        };
+
         blocktrailSDK.prototype.setup2FA = function (password, cb) {
             var self = this;
 
