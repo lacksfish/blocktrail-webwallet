@@ -111,7 +111,7 @@ angular.module('blocktrail.wallet').factory(
 
         blocktrailSDK.prototype.getSignedBitonicUrl = function (identifier, params) {
             var self = this;
-
+            // TODO: Check correct endpoint
             return self.client.post("/mywallet/" + identifier + "/bitonic/oauth", null, params);
         };
 

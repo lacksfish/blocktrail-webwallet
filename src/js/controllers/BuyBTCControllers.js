@@ -194,7 +194,7 @@ angular.module('blocktrail.wallet')
 
         var doneTypingInterval = 200;
         var typingTimer = null;
-        
+
         var lastPriceResponse = null;
 
         switch ($scope.broker) {
@@ -279,11 +279,11 @@ angular.module('blocktrail.wallet')
         };
 
         $scope.triggerUpdate = function() {
-            clearTimeout (typingTimer);
+            if (typingTimer) {
+                clearTimeout(typingTimer);
+            }
             typingTimer = setTimeout(function () {
-                $scope.updateInputPrice().catch(function () {
-                    $scope.fetchingInputPrice = false;
-                });
+                $scope.updateInputPrice();
             }, doneTypingInterval);
         };
 

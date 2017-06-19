@@ -136,7 +136,6 @@ angular.module('blocktrail.wallet').factory(
         };
 
         var regionBrokers = function(chosenRegion) {
-
             if (!chosenRegion) {
                 return $q.when([]);
             }
@@ -145,7 +144,6 @@ angular.module('blocktrail.wallet').factory(
                 return usStates().then(function(usStates) {
                     var brokers = [];
                     usStates.filter(function(usState) {
-
                         if (usState.code == chosenRegion) {
                             brokers = usState.brokers;
                         }
@@ -156,7 +154,6 @@ angular.module('blocktrail.wallet').factory(
                 return regions().then(function(regions) {
                     var brokers = [];
                     regions.filter(function(region) {
-
                         if (region.code == chosenRegion) {
                             brokers = region.brokers;
                         }
