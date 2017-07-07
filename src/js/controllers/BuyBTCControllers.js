@@ -190,7 +190,7 @@ angular.module('blocktrail.wallet')
         $scope.currencies = [];
         $scope.altCurrency = {};
 
-        var doneTypingInterval = 500;
+        var doneTypingInterval = 200;
         var typingTimer = null;
         
         var lastPriceResponse = null;
