@@ -277,11 +277,11 @@ angular.module('blocktrail.wallet')
         };
 
         $scope.triggerUpdate = function() {
-            clearTimeout (typingTimer);
+            if (typingTimer) {
+                clearTimeout(typingTimer);
+            }
             typingTimer = setTimeout(function () {
-                $scope.updateInputPrice().catch(function () {
-                    $scope.fetchingInputPrice = false;
-                });
+                $scope.updateInputPrice();
             }, doneTypingInterval);
         };
 
