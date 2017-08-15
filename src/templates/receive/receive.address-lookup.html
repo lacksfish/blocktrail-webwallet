@@ -59,7 +59,7 @@
                 <td class="colTxCount text-center">{{ item.tx_cnt }}</td>
                 <td class="colBalance text-center"
                     ng-class="{ 'positive-balance' : item.balance > 0 }">
-                    {{ item.balance | satoshiToCurrency: 'BTC' : bitcoinPrices : 8 : false }}
+                    {{ item.balance | satoshiToCurrency: 'BTC' : bitcoinPrices : 8 : false : 'hide' }} {{ CONFIG.NETWORK }}
                 </td>
             </tr>
             </tbody>

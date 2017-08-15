@@ -60,7 +60,7 @@
                             </div>
                             <div class="col-xs-4 text-right">
                                 <div class="value received">
-                                    {{ buybtcPendingOrder.qty | satoshiToCurrency: 'BTC' : bitcoinPrices : 8 }}
+                                    {{ buybtcPendingOrder.qty | satoshiToCurrency: 'BTC' : bitcoinPrices : 8 : false : 'hide' }} {{ CONFIG.NETWORK }}
                                 </div>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                         </div>
                         <div class="col-xs-4 text-right">
                             <div class="value" ng-class="{received: transaction.wallet_value_change > 0, sent: transaction.wallet_value_change <= 0}">
-                                {{ transaction.wallet_value_change | satoshiToCurrency: 'BTC' : bitcoinPrices : 8 }}
+                                {{ transaction.wallet_value_change | satoshiToCurrency: 'BTC'git : bitcoinPrices : 8 : false : 'hide' }} {{ CONFIG.NETWORK }}
                             </div>
                         </div>
                     </div>
