@@ -49,7 +49,13 @@
             glideraActivationNoticePending: null,
             hideBCCSweepWarning: false,
 
-            buyBTCRegion: null
+            buyBTCRegion: null,
+
+            registerURIHandlerExecuted: false,
+            registerURIHandlerNotifyCounter: 0,
+            registerURIHandlerNotifyCounterMax : 3,
+            registerURIHandlerNotifyTimestamp : null,
+            registerURIHandlerNotifyTimestampDelta : 86400 * 7, // One week in seconds
         };
 
         // Mapping for object dependencies
@@ -120,7 +126,10 @@
                 },
                 get: function() {
                     return settings[key];
-                }
+                },
+                // Enumerable, so angular.copy() copies the properties as well
+                // https://github.com/angular/angular.js/issues/8573
+                enumerable: true
             });
         });
 
@@ -527,7 +536,11 @@
             self.$_updateLocalStorage = self._$q.when(this._storage.get(self._id)
                 .catch(function() {
                 }) // suppress document not exists error
-                .then(function() {
+                .then(function(doc) {
+                    // Update the rev id manually
+                    try {
+                        self._doc._rev = doc._rev;
+                    } catch (e) { /* Can't do much if this fails */ }
                     return self._storage.put(angular.copy(self._doc))
                         .catch(function(e) {
                             // Supress error, worst case it wasn't stored locally...
