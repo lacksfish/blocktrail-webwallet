@@ -671,6 +671,9 @@
             return NotificationsService.promptBitcoinURIHandler().result.then(function() {
                 try {
                     $log.debug('Trying to register bitcoin URI scheme');
+                    console.log('bitcoin');
+                    console.log(CONFIG.WALLET_URL + '/#/wallet/handleURI/%s');
+                    console.log('BTC.com Bitcoin Wallet');
                     navigator.registerProtocolHandler(
                         'bitcoin',
                         CONFIG.WALLET_URL + '/#/wallet/handleURI/%s',

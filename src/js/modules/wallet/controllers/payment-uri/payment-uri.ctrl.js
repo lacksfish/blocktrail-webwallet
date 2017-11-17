@@ -4,24 +4,48 @@
     angular.module("blocktrail.wallet")
         .controller("PaymentURICtrl", PaymentURIController);
 
-    function PaymentURIController($state, $stateParams) {
+    // borrowed from bip21, with a modification for optional addresses
+    // in urls.
+    function decodeBitcoin (uri) {
+        var qregex = /bitcoin:\/?\/?([^?]+)?(\?([^]+))?/.exec(uri);
+        if (!qregex) throw new Error('Invalid BIP21 URI: ' + uri);
+
+        var address = qregex[1];
+        var query = qregex[3];
+
+        var options = parseQuery("?"+query);
+        if (options.amount) {
+            options.amount = Number(options.amount);
+            if (!isFinite(options.amount)) throw new Error('Invalid amount');
+            if (options.amount < 0) throw new Error('Invalid amount');
+        }
+
+        return { address: address, options: options };
+    }
+
+    function PaymentURIController($state, $stateParams, bip70) {
 
         var scheme = $stateParams.scheme;
         //parse result for address
         var elm = angular.element('<a>').attr('href', scheme )[0];
+
         if (elm.protocol === 'bitcoin:') {
-            var addressSchemeRegex = /bitcoin:([13][1-9A-HJ-NP-Za-km-z]{25,34})/;
-            var address = addressSchemeRegex.exec(scheme)[1];
-
-            var qs = parseQuery(scheme);
-
-            if (qs.amount || address) {
+            var uri = decodeBitcoin(scheme);
+            if (uri.options.r) {
                 $state.go('app.wallet.send', {
                     protocol: elm.protocol.slice(0, -1),
-                    amount: qs.amount,
-                    address: address,
+                    uri: scheme,
+                    paymentUrl: uri.options.r
+                });
+            } else if (uri.options.amount || uri.address) {
+                $state.go('app.wallet.send', {
+                    protocol: elm.protocol.slice(0, -1),
+                    uri: scheme,
+                    amount: uri.options.amount,
+                    address: uri.address
                 });
             } else {
+                // something was horribly wrong?
                 $state.go('app.wallet.summary');
             }
         }

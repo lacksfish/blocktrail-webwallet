@@ -35,8 +35,10 @@
                 cache: false,
                 params: {
                     protocol: null,
+                    uri: null,
+                    paymentUrl: null,
                     address: null,
-                    amount: null,
+                    amount: null
                 },
                 views: {
                     "mainView@app.wallet": {

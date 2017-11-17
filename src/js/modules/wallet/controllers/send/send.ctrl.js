@@ -106,7 +106,9 @@
          * Handle state parameters about bitcoin payment information, if present
          */
         function handleBitcoinPaymentScheme() {
-
+            console.log("handle uri scheme")
+            console.log($stateParams.protocol);
+            console.log($stateParams);
             // Protocol sanity check
             if ($stateParams.protocol === "bitcoin" || $stateParams.protocol === "bitcoincash") {
                 $timeout(function () {
@@ -120,7 +122,36 @@
                          */
                         return switchWalletByNetworkTypeAndIdentifier('BCC', walletData.identifier);
                     } else {
-                        applyBitcoinURIParams($stateParams.address, $stateParams.amount);
+                        if ($stateParams.paymentUrl) {
+                            console.log("payment url route")
+                            var validation = new bip70.X509.RequestValidator({
+                                trustStore: bip70.X509.TrustStore
+                            });
+
+                            var client = new bip70.HttpClient();
+                            client
+                                .getRequest($stateParams.paymentUrl, validation)
+                                .then(function(request) {
+                                    var details = bip70.ProtoBuf.PaymentDetails.decode(request.serializedPaymentDetails);
+                                    if (details.outputs.length > 1) {
+                                        throw new Error("Multiple output payment requests are not supported");
+                                    }
+
+                                    var output = details.outputs[0];
+                                    var address = bitcoinJS.address.fromOutputScript(output.script, activeWallet.getSdkWallet().sdk.network);
+                                    console.log("made details ", address, " ", output.amount);
+                                    applyBitcoinURIParams(address, output.amount);
+                                    console.log("got request back")
+                                    console.log(request);
+                                }, function(err) {
+                                    console.log("err - abort request");
+                                    console.log(err.message);
+                                    $state.go('app.wallet.summary');
+                                });
+                        } else {
+                            console.log("apply uri params")
+                            applyBitcoinURIParams($stateParams.address, $stateParams.amount);
+                        }
                     }
                 });
             } else if ($stateParams.protocol === null) {
