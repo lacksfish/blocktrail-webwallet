@@ -2,9 +2,11 @@
     "use strict";
 
     angular.module('blocktrail.setup')
-        .factory('loginFormService', function($http, $q, _, cryptoJS, navigator, CONFIG, launchService, setupService, sdkService, trackingService) {
+        .factory('loginFormService', function($http, $q, _, cryptoJS, navigator, CONFIG, launchService, setupService, sdkService,
+                                              trackingService, settingsService, passwordStrengthService, accountSecurityService) {
 
-            return new LoginFormService($http, $q, _, cryptoJS, navigator, CONFIG, launchService, setupService, sdkService, trackingService);
+            return new LoginFormService($http, $q, _, cryptoJS, navigator, CONFIG, launchService, setupService, sdkService,
+                trackingService, settingsService, passwordStrengthService, accountSecurityService);
         }
     );
 
@@ -12,7 +14,8 @@
      * TODO here
      * @constructor
      */
-    function LoginFormService($http, $q, _, cryptoJS, navigator, CONFIG, launchService, setupService, sdkService, trackingService) {
+    function LoginFormService($http, $q, _, cryptoJS, navigator, CONFIG, launchService, setupService, sdkService,
+                              trackingService, settingsService, passwordStrengthService, accountSecurityService) {
         var self = this;
 
         self._$http = $http;
@@ -25,6 +28,9 @@
         self._setupService = setupService;
         self._sdkService = sdkService;
         self._trackingService = trackingService;
+        self._settingsService = settingsService;
+        self._accountSecurityService = accountSecurityService;
+        self._passwordStrengthService = passwordStrengthService;
     }
 
     /**
@@ -110,9 +116,9 @@
         return self._launchService.storeAccountInfo(accountInfo)
             .then(function() {
                 return self._setupService.setUserInfo({
-                    username: data.responseData.username,
-                    displayName: data.responseData.username,
-                    email: data.responseData.email
+                    username:       data.responseData.username,
+                    displayName:    data.responseData.username,
+                    email:          data.responseData.email
                 });
             })
             .then(function() {
