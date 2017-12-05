@@ -1,7 +1,7 @@
 angular.module("blocktrail.wallet")
     .controller("SettingsToolsCtrl", SettingsToolsCtrl);
 
-function SettingsToolsCtrl($scope, $modal, CONFIG, activeWallet, NotificationsService) {
+function SettingsToolsCtrl($scope, $modal, CONFIG, activeWallet, $log, dialogService, $translate, NotificationsService) {
 
     $scope.network = activeWallet.getReadOnlyWalletData().networkType;
 

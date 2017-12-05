@@ -187,9 +187,9 @@ function SettingsProfileCtrl($scope, $rootScope, $translate, dialogService, CONF
             });
 
             // Do not return, as saveData() would not be called then
-            dialogService.alert(
+            return dialogService.alert(
                 $translate.instant("EMAIL_VERIFY"),
-                $translate.instant("MSG_EMAIL_VERIFY")
+                $translate.instant("MSG_EMAIL_CHANGE")
             ).result;
         }
 

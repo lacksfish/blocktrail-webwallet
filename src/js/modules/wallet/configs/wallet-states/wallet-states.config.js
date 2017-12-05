@@ -88,13 +88,6 @@
                 }
             })
             /*--- Settings ---*/
-            // .state("app.wallet.settings", {
-            //     url: "/settings",
-            //     abstract: true,
-            //     controller: "SettingsCtrl"
-            // })
-
-
             .state("app.wallet.settings", {
                 abstract: true,
                 url: "/settings",
@@ -102,7 +95,6 @@
                 views: {
                     "mainView@app.wallet": {
                         templateUrl: "js/modules/wallet/controllers/settings/settings.tpl.html",
-                        controller: "SettingsCtrl",
                     }
                 }
             })

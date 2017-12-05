@@ -38,7 +38,7 @@
 
             return launchService.getAccountInfo().then(function (accountInfo) {
                 if (accountInfo.requires2FA) {
-                    score += 0.3 * accountInfo.requires2FA
+                    score += 0.3
                 }
 
                 self._accountSecurityInfo.score = score * 100;

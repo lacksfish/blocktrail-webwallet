@@ -5,7 +5,6 @@ angular.module("blocktrail.wallet")
 function SettingsSecurityCtrl($scope, $http, $rootScope, $q, cryptoJS, sdkService, launchService, activeWallet,
                             $translate, $timeout, $log, $sce, dialogService, accountSecurityService, $filter,
                             CONFIG, $modal, formSettingsService, passwordStrengthService, settingsService) {
-
     var settings = settingsService.getReadOnlySettingsData();
 
     var listenerEnabled2faToggle;
@@ -13,9 +12,6 @@ function SettingsSecurityCtrl($scope, $http, $rootScope, $q, cryptoJS, sdkServic
     var isEnabled2fa = false;
     // Toggle for enable in scope
     $scope.isEnabled2fa = false;
-
-    // TODO: Show information about email verification
-    $scope.hasEmailChanged = false;
 
     accountSecurityService.updateSecurityScore().then(function () {
         $scope.accountSecurityInfo = accountSecurityService.getSecurityScore();
@@ -46,7 +42,6 @@ function SettingsSecurityCtrl($scope, $http, $rootScope, $q, cryptoJS, sdkServic
      * @param data
      */
     function initData(data) {
-
         isEnabled2fa = data.isEnabled2faToggle;
         $scope.isEnabled2fa = isEnabled2fa;
 
@@ -477,8 +472,6 @@ function SettingsSecurityCtrl($scope, $http, $rootScope, $q, cryptoJS, sdkServic
     }
 
     $scope.verifyEmail = function () {
-        var settings = settingsService.getReadOnlySettingsData();
-
         var sdk = activeWallet.getSdkWallet().sdk;
 
         if (!settings.verifiedEmail) {
@@ -487,14 +480,14 @@ function SettingsSecurityCtrl($scope, $http, $rootScope, $q, cryptoJS, sdkServic
                     // err handling
                     if (!result) {
                         return dialogService.alert(
-                            "Oopss",
-                            "We've failed sending you a verification email to your email inbox."
+                            $translate.instant('ERROR_TITLE_2'),
+                            $translate.instant('MSG_ERROR_SENDING_MAIL')
                         ).result;
                     }
 
                     return dialogService.alert(
-                        "Check your inbox",
-                        "We've sent you a verification email to your email inbox."
+                        $translate.instant('CHECK_YOUR_INBOX'),
+                        $translate.instant('MSG_EMAIL_VERIFY')
                     ).result
                 });
         } else {

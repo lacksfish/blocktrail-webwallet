@@ -4,7 +4,7 @@
     angular.module("blocktrail.core")
         .controller("VerifyEmailCtrl", VerifyEmailCtrl);
 
-    function VerifyEmailCtrl($scope, $stateParams, $location, $translate, accountSecurityService, settingsService) {
+    function VerifyEmailCtrl($scope, $stateParams, $state, $translate, accountSecurityService, settingsService) {
         $scope.working  = true;
         $scope.verified = false;
         $scope.success  = false;
@@ -14,10 +14,10 @@
 
         accountSecurityService.verifyEmail(token)
             .then(function (result) {
-                if(result && result["data"] && !result["data"]["result"]) {
-                    $scope.success = false;
-                } else {
+                if(result.data.result) {
                     $scope.success = true;
+                } else {
+                    $scope.success = false;
                 }
 
                 return settingsService.syncSettingsDown()
@@ -36,7 +36,7 @@
             });
 
         $scope.continueToWallet = function() {
-            $location.path("/");
+            $state.go("app.wallet");
         }
     }
 })();
